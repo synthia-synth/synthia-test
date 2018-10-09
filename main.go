@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/synthia-synth/synthia"
+	"github.com/synthia-synth/synthia/output/porta"
 )
 
 const DefaultSampleRate = 44100
@@ -30,5 +31,9 @@ func main() {
 		return
 	}
 	fmt.Println("Tune Generated. Playing...")
-	playTune(tune, glsampleRate)
+	pa := synthia.NewSignal2PCMWriter(porta.NewPAOutput(porta.DefaultBufferSize))
+	err = pa.WriteSignal(tune, glsampleRate)
+	if err != nil {
+		panic(err.Error())
+	}
 }
